@@ -32,13 +32,18 @@
     <p id="result-text">Say something...</p>
 
     <script>
-        const startButton = document.getElementById("start-btn");
-        const resultText = document.getElementById("result-text");
+    const startButton = document.getElementById("start-btn");
+    const resultText = document.getElementById("result-text");
 
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    // Check if Speech Recognition is supported
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        resultText.textContent = "Sorry, speech recognition is not supported by your browser.";
+    } else {
+        const recognition = new SpeechRecognition();
         recognition.lang = "or-IN"; // Odia language
         recognition.interimResults = false;
-        
+
         startButton.addEventListener("click", () => {
             recognition.start();
             resultText.textContent = "Listening...";
@@ -61,6 +66,8 @@
         recognition.onerror = (event) => {
             resultText.textContent = "Error: " + event.error;
         };
-    </script>
+    }
+</script>
+
 </body>
 </html>
