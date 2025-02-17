@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="or">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odia Voice Bot</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background: linear-gradient(to right, #ffcc33, #ff6699);
+            color: white;
+        }
+        #start-btn {
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #result-text {
+            font-size: 20px; 
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Odia Voice Bot</h1>
+    <button id="start-btn">🎤 Speak in Odia</button>
+    <p id="result-text">Say something...</p>
+
+    <script>
+        const startButton = document.getElementById("start-btn");
+        const resultText = document.getElementById("result-text");
+
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = "or-IN"; // Odia language
+        recognition.interimResults = false;
+        
+        startButton.addEventListener("click", () => {
+            recognition.start();
+            resultText.textContent = "Listening...";
+        });
+
+        recognition.onresult = (event) => {
+            const spokenText = event.results[0][0].transcript;
+            resultText.textContent = "You said: " + spokenText;
+
+            // Matching spoken words to services
+            if (spokenText.includes("ଏଫଆଇଆର") || spokenText.includes("FIR")) {
+                window.location.href = "your-fir-service-page.html";
+            } else if (spokenText.includes("ଅଭିଯୋଗ") || spokenText.includes("complaint")) {
+                window.location.href = "your-complaint-service-page.html";
+            } else {
+                resultText.textContent += " (No matching service found)";
+            }
+        };
+
+        recognition.onerror = (event) => {
+            resultText.textContent = "Error: " + event.error;
+        };
+    </script>
+</body>
+</html>
